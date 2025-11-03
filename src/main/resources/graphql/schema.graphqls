@@ -1,0 +1,245 @@
+# GraphQL Federation v2.9 Schema for Open Receivable System
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.9", import: ["@key", "@shareable", "@external", "@requires", "@provides"])
+
+scalar DateTime
+scalar BigDecimal
+
+enum CustomerType {
+    INDIVIDUAL
+    BUSINESS
+}
+
+enum CustomerStatus {
+    ACTIVE
+    SUSPENDED
+    CLOSED
+    DEFAULTED
+}
+
+enum ReceivableType {
+    MONTHLY_PAYMENT
+    DOWN_PAYMENT
+    LATE_FEE
+    EXCESS_MILEAGE
+    DAMAGE_FEE
+    DISPOSITION_FEE
+    TERMINATION_FEE
+}
+
+enum ReceivableStatus {
+    PENDING
+    PARTIAL
+    PAID
+    OVERDUE
+    WRITTEN_OFF
+}
+
+enum PaymentMethod {
+    CASH
+    CHECK
+    CREDIT_CARD
+    DEBIT_CARD
+    ACH
+    WIRE_TRANSFER
+}
+
+enum PaymentStatus {
+    PENDING
+    COMPLETED
+    FAILED
+    CANCELLED
+    REFUNDED
+}
+
+enum AgingCategory {
+    CURRENT
+    DAYS_1_30
+    DAYS_31_60
+    DAYS_61_90
+    DAYS_91_120
+    OVER_120
+}
+
+type Address {
+    street1: String!
+    street2: String
+    city: String!
+    state: String!
+    postalCode: String!
+    country: String!
+}
+
+type Customer @key(fields: "customerId") {
+    customerId: ID!
+    customerType: CustomerType!
+    firstName: String
+    lastName: String
+    businessName: String
+    email: String!
+    phone: String
+    address: Address
+    taxId: String
+    creditScore: Int
+    status: CustomerStatus!
+    createdDate: DateTime!
+    modifiedDate: DateTime!
+    fullName: String!
+}
+
+type Receivable @key(fields: "receivableId") {
+    receivableId: ID!
+    contractId: String!
+    customerId: String!
+    receivableType: ReceivableType!
+    dueDate: DateTime!
+    originalAmount: BigDecimal!
+    outstandingAmount: BigDecimal!
+    paidAmount: BigDecimal!
+    status: ReceivableStatus!
+    invoiceNumber: String
+    description: String
+    createdDate: DateTime!
+    paidDate: DateTime
+    agingDays: Int
+    isOverdue: Boolean!
+}
+
+type Payment @key(fields: "paymentId") {
+    paymentId: ID!
+    customerId: String!
+    paymentDate: DateTime!
+    amount: BigDecimal!
+    paymentMethod: PaymentMethod!
+    referenceNumber: String
+    notes: String
+    status: PaymentStatus!
+    createdDate: DateTime!
+}
+
+type AgingBucket {
+    agingBucketId: ID!
+    receivableId: String!
+    customerId: String!
+    agingCategory: AgingCategory!
+    amount: BigDecimal!
+    asOfDate: DateTime!
+}
+
+type AgingReport {
+    customerId: String!
+    current: BigDecimal!
+    days1To30: BigDecimal!
+    days31To60: BigDecimal!
+    days61To90: BigDecimal!
+    days91To120: BigDecimal!
+    over120: BigDecimal!
+    totalOutstanding: BigDecimal!
+}
+
+# Input types for mutations
+input AddressInput {
+    street1: String!
+    street2: String
+    city: String!
+    state: String!
+    postalCode: String!
+    country: String!
+}
+
+input CreateCustomerInput {
+    customerType: CustomerType!
+    firstName: String
+    lastName: String
+    businessName: String
+    email: String!
+    phone: String
+    address: AddressInput
+    taxId: String
+    creditScore: Int
+    status: CustomerStatus!
+}
+
+input UpdateCustomerInput {
+    customerId: ID!
+    customerType: CustomerType
+    firstName: String
+    lastName: String
+    businessName: String
+    email: String
+    phone: String
+    address: AddressInput
+    taxId: String
+    creditScore: Int
+    status: CustomerStatus
+}
+
+input CreateReceivableInput {
+    contractId: String!
+    customerId: String!
+    receivableType: ReceivableType!
+    dueDate: DateTime!
+    originalAmount: BigDecimal!
+    invoiceNumber: String
+    description: String
+}
+
+input UpdateReceivableInput {
+    receivableId: ID!
+    status: ReceivableStatus
+    paidAmount: BigDecimal
+    paidDate: DateTime
+}
+
+input CreatePaymentInput {
+    customerId: String!
+    paymentDate: DateTime!
+    amount: BigDecimal!
+    paymentMethod: PaymentMethod!
+    referenceNumber: String
+    notes: String
+}
+
+input UpdatePaymentInput {
+    paymentId: ID!
+    status: PaymentStatus
+    notes: String
+}
+
+# Query type
+type Query {
+    # Customer queries
+    customer(customerId: ID!): Customer
+    customers(status: CustomerStatus): [Customer!]!
+    
+    # Receivable queries
+    receivable(receivableId: ID!): Receivable
+    receivablesByCustomer(customerId: ID!): [Receivable!]!
+    receivablesByContract(contractId: ID!): [Receivable!]!
+    overdueReceivables: [Receivable!]!
+    
+    # Payment queries
+    payment(paymentId: ID!): Payment
+    paymentsByCustomer(customerId: ID!): [Payment!]!
+    
+    # Aging queries
+    customerAgingReport(customerId: ID!): AgingReport
+    customerOutstandingBalance(customerId: ID!): BigDecimal!
+}
+
+# Mutation type
+type Mutation {
+    # Customer mutations
+    createCustomer(input: CreateCustomerInput!): Customer!
+    updateCustomer(input: UpdateCustomerInput!): Customer!
+    
+    # Receivable mutations
+    createReceivable(input: CreateReceivableInput!): Receivable!
+    updateReceivable(input: UpdateReceivableInput!): Receivable!
+    
+    # Payment mutations
+    createPayment(input: CreatePaymentInput!): Payment!
+    updatePayment(input: UpdatePaymentInput!): Payment!
+    
+    # Aging mutations
+    updateAging: Boolean!
+}
