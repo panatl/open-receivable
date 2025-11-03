@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://open-receivable.org/schemas/payment.json",
+  "title": "Payment",
+  "description": "Payment made by customer",
+  "type": "object",
+  "required": ["paymentId", "receivableId", "customerId", "contractId", "paymentDate", "amount", "paymentMethod", "status"],
+  "properties": {
+    "paymentId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the payment"
+    },
+    "receivableId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to receivable"
+    },
+    "customerId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to customer"
+    },
+    "contractId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to contract"
+    },
+    "paymentDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date payment received"
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Payment amount"
+    },
+    "paymentMethod": {
+      "type": "string",
+      "enum": ["CASH", "CHECK", "ACH", "CREDIT_CARD", "DEBIT_CARD", "WIRE_TRANSFER"],
+      "description": "Method of payment"
+    },
+    "referenceNumber": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Transaction reference number"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "CLEARED", "FAILED", "REVERSED"],
+      "description": "Payment status"
+    },
+    "processedBy": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "User who processed payment"
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Additional notes"
+    },
+    "createdDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Payment record creation timestamp"
+    }
+  }
+}

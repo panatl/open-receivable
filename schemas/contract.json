@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://open-receivable.org/schemas/contract.json",
+  "title": "Contract",
+  "description": "Lease or loan contract for auto receivable system",
+  "type": "object",
+  "required": ["contractId", "customerId", "vehicleId", "contractType", "contractNumber", "startDate", "endDate", "status", "principalAmount", "interestRate", "term"],
+  "properties": {
+    "contractId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the contract"
+    },
+    "customerId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to customer"
+    },
+    "vehicleId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to vehicle"
+    },
+    "contractType": {
+      "type": "string",
+      "enum": ["LEASE", "LOAN"],
+      "description": "Type of contract"
+    },
+    "contractNumber": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "Human-readable contract number"
+    },
+    "startDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Contract start date"
+    },
+    "endDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Contract end date"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "COMPLETED", "DEFAULTED", "TERMINATED"],
+      "description": "Contract status"
+    },
+    "principalAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total amount financed"
+    },
+    "interestRate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100,
+      "description": "Annual interest rate percentage"
+    },
+    "term": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Contract term in months"
+    },
+    "paymentFrequency": {
+      "type": "string",
+      "enum": ["MONTHLY", "BI_WEEKLY", "WEEKLY"],
+      "description": "Payment frequency"
+    },
+    "monthlyPayment": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Regular payment amount"
+    },
+    "downPayment": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Initial down payment"
+    },
+    "residualValue": {
+      "type": "number",
+      "minimum": 0,
+      "description": "End of term value (for leases)"
+    },
+    "mileageLimit": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Annual mileage limit (for leases)"
+    },
+    "excessMileageRate": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Charge per mile over limit"
+    },
+    "securityDeposit": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Security deposit amount"
+    },
+    "createdDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Contract creation timestamp"
+    },
+    "modifiedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last modification timestamp"
+    }
+  }
+}
