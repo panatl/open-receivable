@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://open-receivable.org/schemas/payment-allocation.json",
+  "title": "PaymentAllocation",
+  "description": "Allocation of payment to receivables",
+  "type": "object",
+  "required": ["allocationId", "paymentId", "receivableId", "amount", "allocationDate"],
+  "properties": {
+    "allocationId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the allocation"
+    },
+    "paymentId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to payment"
+    },
+    "receivableId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to receivable"
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Allocated amount"
+    },
+    "allocationDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of allocation"
+    },
+    "principalAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Amount applied to principal"
+    },
+    "interestAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Amount applied to interest"
+    },
+    "feeAmount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Amount applied to fees"
+    }
+  }
+}

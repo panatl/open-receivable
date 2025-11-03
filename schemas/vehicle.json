@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://open-receivable.org/schemas/vehicle.json",
+  "title": "Vehicle",
+  "description": "Vehicle entity for auto loan and lease receivable system",
+  "type": "object",
+  "required": ["vehicleId", "vin", "make", "model", "year", "status"],
+  "properties": {
+    "vehicleId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the vehicle"
+    },
+    "vin": {
+      "type": "string",
+      "pattern": "^[A-HJ-NPR-Z0-9]{17}$",
+      "description": "Vehicle Identification Number (17 characters)"
+    },
+    "make": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "Vehicle manufacturer"
+    },
+    "model": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "Vehicle model"
+    },
+    "year": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2100,
+      "description": "Manufacturing year"
+    },
+    "color": {
+      "type": "string",
+      "maxLength": 30,
+      "description": "Vehicle color"
+    },
+    "mileage": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Current mileage"
+    },
+    "purchasePrice": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Original purchase price"
+    },
+    "currentValue": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Current market value"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["AVAILABLE", "LEASED", "SOLD", "MAINTENANCE"],
+      "description": "Vehicle status"
+    },
+    "condition": {
+      "type": "string",
+      "enum": ["NEW", "EXCELLENT", "GOOD", "FAIR", "POOR"],
+      "description": "Vehicle condition"
+    },
+    "acquisitionDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date vehicle was acquired"
+    },
+    "licensePlate": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "License plate number"
+    }
+  }
+}

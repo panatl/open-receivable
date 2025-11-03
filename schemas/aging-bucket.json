@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://open-receivable.org/schemas/aging-bucket.json",
+  "title": "AgingBucket",
+  "description": "Aging categorization of receivables",
+  "type": "object",
+  "required": ["bucketId", "receivableId", "customerId", "agingCategory", "amount", "asOfDate"],
+  "properties": {
+    "bucketId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the bucket"
+    },
+    "receivableId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to receivable"
+    },
+    "customerId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Reference to customer"
+    },
+    "agingCategory": {
+      "type": "string",
+      "enum": ["CURRENT", "DAYS_1_30", "DAYS_31_60", "DAYS_61_90", "DAYS_91_120", "OVER_120"],
+      "description": "Aging category"
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Outstanding amount"
+    },
+    "asOfDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Snapshot date"
+    },
+    "createdDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Record creation timestamp"
+    }
+  }
+}

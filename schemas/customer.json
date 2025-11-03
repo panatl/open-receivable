@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://open-receivable.org/schemas/customer.json",
+  "title": "Customer",
+  "description": "Customer entity for auto loan and lease receivable system",
+  "type": "object",
+  "required": ["customerId", "customerType", "email", "status"],
+  "properties": {
+    "customerId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the customer"
+    },
+    "customerType": {
+      "type": "string",
+      "enum": ["INDIVIDUAL", "BUSINESS"],
+      "description": "Type of customer"
+    },
+    "firstName": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Customer's first name (for individuals)"
+    },
+    "lastName": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Customer's last name (for individuals)"
+    },
+    "businessName": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Business name (for business customers)"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Customer's email address"
+    },
+    "phone": {
+      "type": "string",
+      "pattern": "^[+]?[(]?[0-9]{1,4}[)]?[-\\s\\./0-9]*$",
+      "description": "Customer's phone number"
+    },
+    "address": {
+      "$ref": "address.json",
+      "description": "Customer's physical address"
+    },
+    "taxId": {
+      "type": "string",
+      "description": "Tax ID (SSN for individuals, EIN for businesses)"
+    },
+    "creditScore": {
+      "type": "integer",
+      "minimum": 300,
+      "maximum": 850,
+      "description": "Customer's credit score"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "SUSPENDED", "CLOSED"],
+      "description": "Customer account status"
+    },
+    "createdDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Account creation timestamp"
+    },
+    "modifiedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last modification timestamp"
+    }
+  }
+}
