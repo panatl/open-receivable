@@ -29,12 +29,15 @@ The Open Receivable System helps auto loan and lease organizations manage their 
 - Late fee generation for overdue receivables
 - Contract termination with appropriate charges
 
-### 3. GraphQL Federation v2.9 API
+### 3. Reactive GraphQL Federation v2.9 API
+- Spring Boot application with reactive WebFlux stack
 - Complete GraphQL schema with Federation v2.9 support
-- Query and mutation resolvers for all entities
+- Reactive query and mutation resolvers (Mono/Flux)
+- Non-blocking, asynchronous processing
 - Custom scalar types (DateTime, BigDecimal)
 - Entity federation with @key directives
 - Computed fields and type resolvers
+- GraphiQL interface for interactive testing
 - See [GRAPHQL_FEDERATION.md](GRAPHQL_FEDERATION.md) for details
 
 ### 4. JSON Schemas
@@ -87,7 +90,7 @@ See [DATA_MODEL.md](DATA_MODEL.md) for complete data model documentation.
 
 ### Prerequisites
 
-- Java 11 or higher
+- Java 17 or higher
 - Maven 3.6 or higher
 
 ### Building the Project
@@ -95,6 +98,18 @@ See [DATA_MODEL.md](DATA_MODEL.md) for complete data model documentation.
 ```bash
 mvn clean compile
 ```
+
+### Running the Application
+
+```bash
+# Run the Spring Boot application
+mvn spring-boot:run
+```
+
+The application will start on port 8080:
+- GraphQL endpoint: `http://localhost:8080/graphql`
+- GraphiQL interface: `http://localhost:8080/graphiql`
+- WebSocket endpoint: `http://localhost:8080/graphql-ws`
 
 ### Project Structure
 
@@ -112,11 +127,16 @@ open-receivable/
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── org/openreceivable/
+│   │   │       ├── OpenReceivableApplication.java  # Spring Boot main class
 │   │   │       ├── model/      # Domain models
 │   │   │       ├── repository/ # Repository interfaces
 │   │   │       ├── service/    # Business logic services
-│   │   │       └── enums/      # Enumerations
+│   │   │       ├── enums/      # Enumerations
+│   │   │       └── graphql/    # GraphQL resolvers, scalars, inputs
 │   │   └── resources/
+│   │       ├── application.properties  # Spring Boot configuration
+│   │       └── graphql/
+│   │           └── schema.graphqls     # GraphQL schema
 │   └── test/
 │       └── java/
 ├── DATA_MODEL.md              # Data model documentation
@@ -172,19 +192,29 @@ See [EXAMPLES.md](EXAMPLES.md) for detailed usage examples including:
 
 ## Implementation Notes
 
-This is a framework/library implementation that provides:
+This is a **Spring Boot reactive application** that provides:
 - Complete domain model
 - Repository interfaces (implementation depends on your data store)
 - Service layer with business logic
-- GraphQL Federation v2.9 API with query and mutation resolvers
+- Reactive GraphQL Federation v2.9 API with non-blocking query and mutation resolvers
+- Spring WebFlux for reactive, non-blocking operations
 - JSON schemas for validation
 
 To use this in your application:
-1. Implement the repository interfaces for your chosen data store (JPA, MongoDB, etc.)
+1. Implement the repository interfaces for your chosen data store (R2DBC, MongoDB Reactive, etc.)
 2. Wire up the services with your repository implementations
-3. Use the GraphQL API for queries and mutations (see [GRAPHQL_FEDERATION.md](GRAPHQL_FEDERATION.md))
+3. Use the reactive GraphQL API for queries and mutations (see [GRAPHQL_FEDERATION.md](GRAPHQL_FEDERATION.md))
 4. Alternatively, add REST endpoints or other interfaces as needed
 5. Integrate with your authentication and authorization system
+
+## Technology Stack
+
+- **Java 17**: Modern Java platform
+- **Spring Boot 3.2.0**: Application framework
+- **Spring WebFlux**: Reactive web framework
+- **Project Reactor**: Reactive streams implementation (Mono/Flux)
+- **GraphQL Java**: GraphQL implementation
+- **Apollo Federation**: Federation v2.9 support
 
 ## Future Enhancements
 

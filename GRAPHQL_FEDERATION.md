@@ -4,13 +4,34 @@ This document describes the GraphQL Federation v2.9 implementation for the Open 
 
 ## Overview
 
-The Open Receivable System now supports GraphQL Federation v2.9, providing a unified API for querying and mutating receivable data. The implementation includes:
+The Open Receivable System now supports GraphQL Federation v2.9 with **reactive Spring Boot and WebFlux**, providing a unified non-blocking API for querying and mutating receivable data. The implementation includes:
 
+- **Spring Boot Application** with reactive web stack
 - **Federation v2.9 directives** for entity federation
+- **Reactive resolvers** using Project Reactor (Mono/Flux)
 - **Custom scalar types** for DateTime and BigDecimal
-- **Query resolvers** for retrieving data
-- **Mutation resolvers** for updating data
+- **Query resolvers** for retrieving data (non-blocking)
+- **Mutation resolvers** for updating data (asynchronous)
 - **Type resolvers** for computed fields
+
+## Getting Started
+
+### Running the Application
+
+The application uses Spring Boot with WebFlux for reactive processing:
+
+```bash
+# Build the project
+mvn clean package
+
+# Run the application
+mvn spring-boot:run
+```
+
+The application will start on port 8080 with:
+- GraphQL endpoint: `http://localhost:8080/graphql`
+- GraphiQL interface: `http://localhost:8080/graphiql`
+- WebSocket endpoint: `http://localhost:8080/graphql-ws`
 
 ## Schema Location
 
@@ -18,6 +39,19 @@ The GraphQL schema is located at:
 ```
 src/main/resources/graphql/schema.graphqls
 ```
+
+## Reactive Architecture
+
+All resolvers are reactive and return:
+- `Mono<T>` for single values (non-blocking)
+- `Flux<T>` for collections (streaming)
+- Asynchronous processing using Project Reactor
+
+This enables:
+- Non-blocking I/O operations
+- Better resource utilization
+- Scalable concurrent request handling
+- Backpressure support
 
 ## Federation Features
 
