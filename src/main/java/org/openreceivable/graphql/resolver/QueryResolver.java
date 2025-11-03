@@ -12,13 +12,15 @@ import org.openreceivable.service.ReceivableService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 /**
- * GraphQL Query resolver for Open Receivable System
+ * Reactive GraphQL Query resolver for Open Receivable System
  */
 @Controller
 public class QueryResolver {
@@ -41,65 +43,72 @@ public class QueryResolver {
     // Customer queries
     
     @QueryMapping
-    public Customer customer(@Argument String customerId) {
-        return customerRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found: " + customerId));
+    public Mono<Customer> customer(@Argument String customerId) {
+        return Mono.fromCallable(() -> customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found: " + customerId)));
     }
     
     @QueryMapping
-    public List<Customer> customers(@Argument CustomerStatus status) {
-        if (status != null) {
-            return customerRepository.findByStatus(status);
-        }
-        return customerRepository.findAll();
+    public Flux<Customer> customers(@Argument CustomerStatus status) {
+        return Mono.fromCallable(() -> {
+            if (status != null) {
+                return customerRepository.findByStatus(status);
+            }
+            return customerRepository.findAll();
+        }).flatMapMany(Flux::fromIterable);
     }
     
     // Receivable queries
     
     @QueryMapping
-    public Receivable receivable(@Argument String receivableId) {
-        return receivableRepository.findById(receivableId)
-                .orElseThrow(() -> new RuntimeException("Receivable not found: " + receivableId));
+    public Mono<Receivable> receivable(@Argument String receivableId) {
+        return Mono.fromCallable(() -> receivableRepository.findById(receivableId)
+                .orElseThrow(() -> new RuntimeException("Receivable not found: " + receivableId)));
     }
     
     @QueryMapping
-    public List<Receivable> receivablesByCustomer(@Argument String customerId) {
-        return receivableService.getCustomerReceivables(customerId);
+    public Flux<Receivable> receivablesByCustomer(@Argument String customerId) {
+        return Mono.fromCallable(() -> receivableService.getCustomerReceivables(customerId))
+                .flatMapMany(Flux::fromIterable);
     }
     
     @QueryMapping
-    public List<Receivable> receivablesByContract(@Argument String contractId) {
-        return receivableService.getContractReceivables(contractId);
+    public Flux<Receivable> receivablesByContract(@Argument String contractId) {
+        return Mono.fromCallable(() -> receivableService.getContractReceivables(contractId))
+                .flatMapMany(Flux::fromIterable);
     }
     
     @QueryMapping
-    public List<Receivable> overdueReceivables() {
-        return receivableService.getOverdueReceivables();
+    public Flux<Receivable> overdueReceivables() {
+        return Mono.fromCallable(() -> receivableService.getOverdueReceivables())
+                .flatMapMany(Flux::fromIterable);
     }
     
     // Payment queries
     
     @QueryMapping
-    public Payment payment(@Argument String paymentId) {
-        return paymentRepository.findById(paymentId)
-                .orElseThrow(() -> new RuntimeException("Payment not found: " + paymentId));
+    public Mono<Payment> payment(@Argument String paymentId) {
+        return Mono.fromCallable(() -> paymentRepository.findById(paymentId)
+                .orElseThrow(() -> new RuntimeException("Payment not found: " + paymentId)));
     }
     
     @QueryMapping
-    public List<Payment> paymentsByCustomer(@Argument String customerId) {
-        return paymentRepository.findByCustomerId(customerId);
+    public Flux<Payment> paymentsByCustomer(@Argument String customerId) {
+        return Mono.fromCallable(() -> paymentRepository.findByCustomerId(customerId))
+                .flatMapMany(Flux::fromIterable);
     }
     
     // Aging queries
     
     @QueryMapping
-    public AgingReport customerAgingReport(@Argument String customerId) {
-        return convertToAgingReport(customerId, receivableService.getCustomerAgingReport(customerId));
+    public Mono<AgingReport> customerAgingReport(@Argument String customerId) {
+        return Mono.fromCallable(() -> 
+                convertToAgingReport(customerId, receivableService.getCustomerAgingReport(customerId)));
     }
     
     @QueryMapping
-    public BigDecimal customerOutstandingBalance(@Argument String customerId) {
-        return receivableService.getCustomerOutstandingBalance(customerId);
+    public Mono<BigDecimal> customerOutstandingBalance(@Argument String customerId) {
+        return Mono.fromCallable(() -> receivableService.getCustomerOutstandingBalance(customerId));
     }
     
     /**

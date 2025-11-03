@@ -5,6 +5,13 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+        <relativePath/>
+    </parent>
+
     <groupId>org.openreceivable</groupId>
     <artifactId>open-receivable</artifactId>
     <version>1.0.0-SNAPSHOT</version>
@@ -19,10 +26,21 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <graphql-java.version>21.5</graphql-java.version>
         <graphql-java-extended-scalars.version>21.0</graphql-java-extended-scalars.version>
-        <spring-boot.version>3.2.0</spring-boot.version>
     </properties>
 
     <dependencies>
+        <!-- Spring Boot Starter WebFlux for Reactive Support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+        
+        <!-- Spring Boot Starter GraphQL (includes Federation support) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-graphql</artifactId>
+        </dependency>
+        
         <!-- GraphQL Java -->
         <dependency>
             <groupId>com.graphql-java</groupId>
@@ -37,25 +55,17 @@
             <version>${graphql-java-extended-scalars.version}</version>
         </dependency>
         
-        <!-- Spring Boot Starter GraphQL (includes Federation support) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-graphql</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        
-        <!-- Spring Boot Starter Web -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        
         <!-- GraphQL Java Federation -->
         <dependency>
             <groupId>com.apollographql.federation</groupId>
             <artifactId>federation-graphql-java-support</artifactId>
             <version>4.2.0</version>
+        </dependency>
+        
+        <!-- Reactor Core for Reactive Programming -->
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
         </dependency>
     </dependencies>
 
@@ -69,6 +79,10 @@
         </resources>
         
         <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
