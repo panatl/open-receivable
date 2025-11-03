@@ -1,6 +1,7 @@
 package org.openreceivable.graphql.resolver;
 
 import org.openreceivable.enums.CustomerStatus;
+import org.openreceivable.graphql.model.AgingReport;
 import org.openreceivable.model.Customer;
 import org.openreceivable.model.Payment;
 import org.openreceivable.model.Receivable;

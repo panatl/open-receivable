@@ -1,4 +1,4 @@
-package org.openreceivable.graphql.resolver;
+package org.openreceivable.graphql.model;
 
 import java.math.BigDecimal;
 

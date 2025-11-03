@@ -2,7 +2,6 @@ package org.openreceivable.graphql.input;
 
 import org.openreceivable.enums.CustomerStatus;
 import org.openreceivable.enums.CustomerType;
-import org.openreceivable.model.Address;
 
 /**
  * Input type for creating a customer

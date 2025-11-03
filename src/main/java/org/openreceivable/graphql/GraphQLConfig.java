@@ -35,6 +35,8 @@ public class GraphQLConfig {
     
     /**
      * Configure GraphQL schema with Federation support
+     * Note: Entity resolvers are not implemented yet. They will be added when
+     * cross-subgraph entity resolution is needed.
      */
     @Bean
     public GraphQLSchema graphQLSchema() throws IOException {
@@ -52,14 +54,22 @@ public class GraphQLConfig {
                 .build();
         
         // Generate the schema with Federation support
+        // Entity resolvers will be implemented when cross-subgraph resolution is needed
         return Federation.transform(typeRegistry, runtimeWiring)
                 .fetchEntities(env -> {
-                    // Federation entity resolver - to be implemented based on requirements
-                    return null;
+                    // TODO: Implement entity fetching when needed for cross-subgraph queries
+                    // For now, return an empty list as entities are fetched via regular queries
+                    return java.util.Collections.emptyList();
                 })
                 .resolveEntityType(env -> {
-                    // Entity type resolver - to be implemented based on requirements
-                    return null;
+                    // TODO: Implement type resolution when needed for cross-subgraph queries
+                    // For now, use the __typename from the entity
+                    Object entity = env.getObject();
+                    if (entity instanceof java.util.Map) {
+                        String typename = (String) ((java.util.Map<?, ?>) entity).get("__typename");
+                        return env.getSchema().getObjectType(typename);
+                    }
+                    throw new RuntimeException("Unable to resolve entity type");
                 })
                 .build();
     }

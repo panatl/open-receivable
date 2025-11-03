@@ -30,8 +30,14 @@ public class BigDecimalScalar {
                         } catch (NumberFormatException e) {
                             throw new CoercingParseValueException("Invalid BigDecimal format", e);
                         }
-                    } else if (input instanceof Number) {
-                        return BigDecimal.valueOf(((Number) input).doubleValue());
+                    } else if (input instanceof Integer) {
+                        return BigDecimal.valueOf((Integer) input);
+                    } else if (input instanceof Long) {
+                        return BigDecimal.valueOf((Long) input);
+                    } else if (input instanceof Double) {
+                        return BigDecimal.valueOf((Double) input);
+                    } else if (input instanceof Float) {
+                        return BigDecimal.valueOf((Float) input);
                     }
                     throw new CoercingParseValueException("Expected String or Number");
                 }
