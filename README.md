@@ -29,7 +29,15 @@ The Open Receivable System helps auto loan and lease organizations manage their 
 - Late fee generation for overdue receivables
 - Contract termination with appropriate charges
 
-### 3. JSON Schemas
+### 3. GraphQL Federation v2.9 API
+- Complete GraphQL schema with Federation v2.9 support
+- Query and mutation resolvers for all entities
+- Custom scalar types (DateTime, BigDecimal)
+- Entity federation with @key directives
+- Computed fields and type resolvers
+- See [GRAPHQL_FEDERATION.md](GRAPHQL_FEDERATION.md) for details
+
+### 4. JSON Schemas
 - Complete JSON schema definitions for all entities
 - Validation support for data integrity
 - Easy integration with REST APIs and NoSQL databases
@@ -168,24 +176,27 @@ This is a framework/library implementation that provides:
 - Complete domain model
 - Repository interfaces (implementation depends on your data store)
 - Service layer with business logic
+- GraphQL Federation v2.9 API with query and mutation resolvers
 - JSON schemas for validation
 
 To use this in your application:
 1. Implement the repository interfaces for your chosen data store (JPA, MongoDB, etc.)
 2. Wire up the services with your repository implementations
-3. Add REST endpoints or other interfaces as needed
-4. Integrate with your authentication and authorization system
+3. Use the GraphQL API for queries and mutations (see [GRAPHQL_FEDERATION.md](GRAPHQL_FEDERATION.md))
+4. Alternatively, add REST endpoints or other interfaces as needed
+5. Integrate with your authentication and authorization system
 
 ## Future Enhancements
 
 Potential areas for expansion:
-- REST API implementation
+- REST API implementation (in addition to GraphQL)
 - Database migrations
 - Reporting engine
 - Collections workflow
 - Integration with accounting systems
 - Document management
 - Notifications and alerts
+- GraphQL subscriptions for real-time updates
 
 ## License
 
