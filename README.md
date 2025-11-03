@@ -1,3 +1,3 @@
 # open-receivable
 
-**Open Receivable** is a backend API service and software system designed for Auto Load and lease organizations. The platform provides robust and scalable receivables management functionality, enabling businesses in vehicle loading and leasing to efficiently track, manage, and automate receivables processes.
+**Open Receivable** is a backend API service and software system designed for Auto Loan and Lease organizations. The platform provides robust and scalable receivables management functionality, enabling businesses in vehicle loading and leasing to efficiently track, manage, and automate receivables processes.
