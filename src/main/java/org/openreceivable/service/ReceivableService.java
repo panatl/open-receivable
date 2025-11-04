@@ -6,6 +6,7 @@ import org.openreceivable.model.AgingBucket;
 import org.openreceivable.model.Receivable;
 import org.openreceivable.repository.AgingBucketRepository;
 import org.openreceivable.repository.ReceivableRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.util.Map;
 /**
  * Service for managing receivables and aging analysis
  */
+@Service
 public class ReceivableService {
     
     private final ReceivableRepository receivableRepository;

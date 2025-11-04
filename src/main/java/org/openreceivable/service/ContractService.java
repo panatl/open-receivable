@@ -6,6 +6,7 @@ import org.openreceivable.model.Contract;
 import org.openreceivable.model.Receivable;
 import org.openreceivable.repository.ContractRepository;
 import org.openreceivable.repository.ReceivableRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Service for managing contracts and generating receivables
  */
+@Service
 public class ContractService {
     
     private final ContractRepository contractRepository;
