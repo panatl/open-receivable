@@ -235,3 +235,5 @@ This project is available under an open source license.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit pull requests or open issues for bugs and feature requests.
+
+This repository has **force push and direct push to main enabled** for rapid development. See [CONTRIBUTING.md](CONTRIBUTING.md) for development workflow guidelines and [BRANCH_PROTECTION.md](BRANCH_PROTECTION.md) for information about branch protection configuration.
