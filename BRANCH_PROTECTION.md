@@ -15,7 +15,7 @@ To allow force push and direct push to the main branch, you need to configure th
 
 ### Step 1: Access Repository Settings
 
-1. Go to your GitHub repository: `https://github.com/panatl/open-receivable`
+1. Go to your GitHub repository (e.g., `https://github.com/panatl/open-receivable`)
 2. Click on **Settings** (you need admin access to the repository)
 3. In the left sidebar, click on **Branches** under "Code and automation"
 
@@ -118,13 +118,13 @@ You can also configure branch protection programmatically using the GitHub API:
 curl -X DELETE \
   -H "Authorization: token YOUR_GITHUB_TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
-  https://api.github.com/repos/panatl/open-receivable/branches/main/protection
+  https://api.github.com/repos/OWNER/REPO/branches/main/protection
 
 # Update branch protection to allow force pushes
 curl -X PUT \
   -H "Authorization: token YOUR_GITHUB_TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
-  https://api.github.com/repos/panatl/open-receivable/branches/main/protection \
+  https://api.github.com/repos/OWNER/REPO/branches/main/protection \
   -d '{
     "required_status_checks": null,
     "enforce_admins": false,
@@ -135,7 +135,7 @@ curl -X PUT \
   }'
 ```
 
-Replace `YOUR_GITHUB_TOKEN` with a personal access token that has `repo` scope.
+Replace `YOUR_GITHUB_TOKEN` with a personal access token that has `repo` scope, and `OWNER/REPO` with your repository path (e.g., `panatl/open-receivable`).
 
 ## Troubleshooting
 

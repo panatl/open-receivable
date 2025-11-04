@@ -6,7 +6,7 @@ This guide provides quick instructions for enabling force push and direct push t
 
 ### Quick Steps (Web Interface)
 
-1. Go to: `https://github.com/panatl/open-receivable/settings/branches`
+1. Go to: `https://github.com/panatl/open-receivable/settings/branches` (or navigate to your repository Settings → Branches)
 2. Find or create a branch protection rule for `main`
 3. Configure:
    - ✅ Check "Allow force pushes"

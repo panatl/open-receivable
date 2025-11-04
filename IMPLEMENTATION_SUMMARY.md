@@ -62,7 +62,7 @@ This repository has been updated with comprehensive documentation and configurat
 
 ```bash
 # Clone and test
-git clone https://github.com/panatl/open-receivable.git
+git clone https://github.com/panatl/open-receivable.git  # Or your fork/repository URL
 cd open-receivable
 git checkout main
 

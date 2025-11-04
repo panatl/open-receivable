@@ -15,6 +15,7 @@ Thank you for your interest in contributing to the Open Receivable System!
 1. **Fork and Clone the Repository**
 
    ```bash
+   # Replace with your repository URL
    git clone https://github.com/panatl/open-receivable.git
    cd open-receivable
    ```
