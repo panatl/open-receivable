@@ -14,8 +14,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.graphql.execution.GraphQlSource;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * GraphQL Configuration with Federation v2.9 support
@@ -40,12 +41,15 @@ public class GraphQLConfig {
      */
     @Bean
     public GraphQLSchema graphQLSchema() throws IOException {
-        // Load the schema file
-        File schemaFile = new ClassPathResource("graphql/schema.graphqls").getFile();
-        
-        // Parse the schema
+        // Load the schema from the classpath as a stream (works both in IDE and fat JAR)
+        ClassPathResource resource = new ClassPathResource("graphql/schema.graphqls");
+
+        // Parse the schema from a Reader to avoid relying on a real filesystem path
         SchemaParser schemaParser = new SchemaParser();
-        TypeDefinitionRegistry typeRegistry = schemaParser.parse(schemaFile);
+        TypeDefinitionRegistry typeRegistry;
+        try (InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8)) {
+            typeRegistry = schemaParser.parse(reader);
+        }
         
         // Build runtime wiring with custom scalars
         RuntimeWiring runtimeWiring = RuntimeWiring.newRuntimeWiring()
@@ -72,5 +76,17 @@ public class GraphQLConfig {
                     throw new RuntimeException("Unable to resolve entity type");
                 })
                 .build();
+    }
+
+    /**
+     * Provide a GraphQlSource backed by the federated GraphQLSchema so that
+     * Spring GraphQL does not try to parse the SDL itself (which would not know
+     * about Federation directives).
+     */
+    @Bean
+    public GraphQlSource graphQlSource(GraphQLSchema schema, RuntimeWiringConfigurer runtimeWiringConfigurer) {
+        // Runtime wiring (e.g., custom scalars) is already applied when building the schema.
+        // Provide the pre-built schema directly to Spring GraphQL.
+        return GraphQlSource.builder(schema).build();
     }
 }

@@ -59,7 +59,7 @@
         <dependency>
             <groupId>com.apollographql.federation</groupId>
             <artifactId>federation-graphql-java-support</artifactId>
-            <version>4.2.0</version>
+            <version>5.4.0</version>
         </dependency>
         
         <!-- Reactor Core for Reactive Programming -->
