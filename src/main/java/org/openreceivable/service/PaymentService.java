@@ -7,6 +7,7 @@ import org.openreceivable.model.Receivable;
 import org.openreceivable.repository.PaymentAllocationRepository;
 import org.openreceivable.repository.PaymentRepository;
 import org.openreceivable.repository.ReceivableRepository;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.util.List;
 /**
  * Service for processing payments and allocating them to receivables
  */
+@Service
 public class PaymentService {
     
     private final PaymentRepository paymentRepository;
