@@ -60,7 +60,7 @@ public class InMemoryReceivableRepository implements ReceivableRepository {
     public List<Receivable> findOverdue(LocalDateTime asOfDate) {
         return receivables.values().stream()
                 .filter(r -> r.getDueDate() != null && r.getDueDate().isBefore(asOfDate) &&
-                            r.getStatus() != ReceivableStatus.PAID)
+                            !ReceivableStatus.PAID.equals(r.getStatus()))
                 .collect(Collectors.toList());
     }
     
